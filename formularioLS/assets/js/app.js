@@ -35,7 +35,7 @@ function agregarTweet(e) {
     li.appendChild(botonBorrar);
     listaTweets.appendChild(li);
 
-    // agrgar tweet al localstorage
+    // agregar tweet al localstorage
     agragarTweetLocalStorage(tweet);
 
     console.log(tweet);
@@ -46,9 +46,10 @@ function borrarTweets(e) {
     e.preventDefault();
 
     if (e.target.className === 'borrar-tweet') {
-        console.log(e.target.parentElement.remove());
+        e.target.parentElement.remove();
 
-        alert(`Eliminar tweet: ${tweet.value}`);
+        borrarTweetLocalStorage(e.target.parentElement.innerText);
+
     }
 }
 
@@ -99,4 +100,24 @@ function obtenerTweetsLocalStorage() {
         tweets = JSON.parse(localStorage.getItem('tweets'));
     }
     return tweets
+}
+
+//Eliminar tweet del localStorage
+
+function borrarTweetLocalStorage(tweet) {
+
+    let tweets, tweetsBorrar;
+
+    //Elimina la X del tweet
+    tweetsBorrar = tweet.substring(0, tweet.length - 1);
+
+    tweets = obtenerTweetsLocalStorage();
+
+    tweets.forEach(function(tweet, index) {
+        if (tweetsBorrar === tweet) {
+            tweets.splice(index, 1)
+        }
+    });
+    localStorage.setItem('tweets', JSON.stringify(tweets));
+    console.log(tweets);
 }
